@@ -48,7 +48,9 @@ function App() {
   const lineItemColumnsKeys = Object.keys(lineItemData);
   const orderDataFlat = [];
   const liDataFlat = [];
-
+  // if (orderColumns) {
+  //   console.log(orderColumns);
+  // }
   if (orderColumnsKeys.length > 0) {
     for (let i = 0; i < orderData[orderColumnsKeys[0]].length; i++) { // for each row of data
       let row = { 
