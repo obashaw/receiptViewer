@@ -1,6 +1,5 @@
 import React from 'react';
 import { format, fromUnixTime } from "date-fns";
-import './ReceiptViewer.css';
 
 const ReceiptViewer = ({ orderDataFlat, lineItemDataFlat }) => {
   // Group line items by order number
