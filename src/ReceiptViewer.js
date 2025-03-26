@@ -1,5 +1,6 @@
 import React from 'react';
 import { format, fromUnixTime } from "date-fns";
+import './ReceiptViewer.css';
 
 const ReceiptViewer = ({ orderDataFlat, lineItemDataFlat }) => {
   // Group line items by order number
@@ -11,6 +12,11 @@ const ReceiptViewer = ({ orderDataFlat, lineItemDataFlat }) => {
     return acc;
   }, {});
 
+  const receiptContainerStyles = {
+    maxWidth: '300px',
+    width: '100%',
+    overflow: 'visible' /* Ensures full content visibility */
+  }
   // Base styles for the receipt
   const receiptStyles = {
     backgroundColor: '#ffffff', // 1. White background
@@ -21,10 +27,11 @@ const ReceiptViewer = ({ orderDataFlat, lineItemDataFlat }) => {
     width: '100%',
     marginLeft: '20px',
     marginTop: '20px'
-  };
+  }; 
+
 
   return (
-    <div>
+    <div style={receiptContainerStyles}>
       {orderDataFlat.map((order) => {
         const orderLineItems = lineItemsByOrder[order.ORDER_NUMBER] || [];
         const total = orderLineItems.reduce((sum, item) => 
