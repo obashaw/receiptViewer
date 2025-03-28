@@ -20,10 +20,23 @@ function App() {
   const config = useConfig();
 
   const orderData = useElementData(config.orders);
+  const orderColumns = useElementColumns(config.orders);
   const lineItemData = useElementData(config.lineItems);
+  const lineItemColumns = useElementColumns(config.lineItems);
+
   
   const orderColumnsKeys = Object.keys(orderData);
   const lineItemColumnsKeys = Object.keys(lineItemData);
+  
+  const orderColumnMap = Object.fromEntries(
+    Object.entries(orderColumns).map(([key, value]) => [value.name, key])
+  );
+  const lineItemColumnMap = Object.fromEntries(
+    Object.entries(lineItemColumns).map(([key, value]) => [value.name, key])
+  );
+  
+  console.log(orderColumnMap);
+  console.log(lineItemColumnMap);
   const orderDataFlat = [];
   const liDataFlat = [];
 

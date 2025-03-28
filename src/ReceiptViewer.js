@@ -3,12 +3,13 @@ import { format, fromUnixTime } from "date-fns";
 import html2pdf from 'html2pdf.js';
 
 const ReceiptViewer = ({ orderDataFlat, lineItemDataFlat }) => {
+
   // Group line items by order number
   const lineItemsByOrder = lineItemDataFlat.reduce((acc, item) => {
-    if (!acc[item.ORDER_NUMBER]) {
-      acc[item.ORDER_NUMBER] = [];
+    if (!acc[item.TRANSACTIONID]) {
+      acc[item.TRANSACTIONID] = [];
     }
-    acc[item.ORDER_NUMBER].push(item);
+    acc[item.TRANSACTIONID].push(item);
     return acc;
   }, {});
 
@@ -74,10 +75,10 @@ const ReceiptViewer = ({ orderDataFlat, lineItemDataFlat }) => {
       
       <div ref={receiptContainerRef} style={receiptContainerStyles}>
         {orderDataFlat.map((order) => {
-          const orderLineItems = lineItemsByOrder[order.ORDER_NUMBER] || [];
+          const orderLineItems = lineItemsByOrder[order.TRANSACTIONID] || [];
           const total = orderLineItems.reduce((sum, item) => 
             sum + (item.PRICE * item.QUANTITY), 0);
-          const isReturn = order.TRANSACTION_TYPE === 'Return';
+          const isReturn = order.TRANSACTIONTYPE === 'RETURN';
 
           // Conditional styles based on return status
           const containerStyles = {
@@ -86,9 +87,9 @@ const ReceiptViewer = ({ orderDataFlat, lineItemDataFlat }) => {
           };
 
           return (
-            <div key={order.ORDER_NUMBER} style={containerStyles} className="receipt">
+            <div key={order.TRANSACTIONID} style={containerStyles} className="receipt">
               <h2 style={{ marginBottom: '15px' , textAlign: 'center'}}>
-                ReceiptViewer #{order.ORDER_NUMBER}
+                ReceiptViewer #{order.TRANSACTIONID}
               </h2>
               
               <div style={{ marginBottom: '10px' , textAlign: 'center'}}>
@@ -96,11 +97,11 @@ const ReceiptViewer = ({ orderDataFlat, lineItemDataFlat }) => {
               </div>
               
               <div style={{ marginBottom: '10px' , textAlign: 'center'}}>
-                Customer: {order.CUST_KEY} | Store: {order.STORE_KEY}
+                Customer: {order.CUSTOMERNAMEY} | Store: {order.LOCATIONNUMBER}
               </div>
               
               <div style={{ marginBottom: '15px' , textAlign: 'center'}}>
-                Transaction Type: {order.TRANSACTION_TYPE}
+                Transaction Type: {order.TRANSACTIONTYPE}
               </div>
               
               {isReturn && (
@@ -110,7 +111,7 @@ const ReceiptViewer = ({ orderDataFlat, lineItemDataFlat }) => {
               )}
 
               {orderLineItems.map((item, index) => {
-                const isVoid = item.SKU_NUMBER === 'AU2878977250';
+                const isVoid = item.ISVOIDED === 1;
                 return (
                 <div 
                   key={index}
@@ -122,11 +123,11 @@ const ReceiptViewer = ({ orderDataFlat, lineItemDataFlat }) => {
                 >
                   {isVoid && <div style={{ fontWeight: 'bold' , textAlign:'center' }}>** VOID **</div>}
                   <div style={{ marginBottom: '5px' }}>
-                    SKU: {item.SKU_NUMBER}
+                    SKU: {item.SKU}
                   </div>
                   <div style={{ marginLeft: '20px' }}>
                     <div style={{ marginBottom: '5px' }}>
-                      Product Type: {item.PRODUCT_TYPE}
+                      CATEGORY: {item.CATEGORY}
                     </div>
                     <div style={{ marginBottom: '5px' }}>
                       Quantity: {item.QUANTITY}

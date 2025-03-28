@@ -1,0 +1,15 @@
+plugs fields used 
+orders (headers)
+- ORDER_NUMBER : transactionid
+- TRANSACTION_TYPE : transactiontype
+- DATE : date
+- STORE_KEY : locationnumber
+- CUST_KEY : customername
+
+
+line items (sale lines)
+- SKU_NUMBER : lineid
+- ORDER_NUMBER : transactionid
+- PRODUCT_TYPE : category
+- PRICE : price
+- QUANTITY : quantity
